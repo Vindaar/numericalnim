@@ -7,6 +7,8 @@ type
 
   ODEProc*[T] = proc(t: float, y: T, ctx: NumContext[T]): T
 
+  NumContextProc*[T] = proc(x: float, ctx: NumContext[T]): T
+
 proc newNumContext*[T](fValues: Table[string, float] = initTable[string, float](), tValues: Table[string, T] = initTable[string, T]()): NumContext[T] =
   NumContext[T](fValues: fValues, tValues: tValues)
 

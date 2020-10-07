@@ -27,7 +27,7 @@ test "CubicSpline Eval in input points, for loop":
         res[i] = cubicSpline.eval(tTemp)
     for i, val in res:
         check isClose(val, y[i], 1e-15)
-    
+
 test "CubicSpline Eval between input points":
     let res = cubicSpline.eval(tTest)
     for i, val in res:
@@ -41,7 +41,7 @@ test "CubicSpline.toProc, single value":
         check isClose(val, y[i], 1e-15)
 
 test "CubicSpline Integrate using adaptiveSimpson, implicit":
-    let computedValue = adaptiveSimpson(cubicSpline, 0.0, 7.5)
+    let computedValue = adaptiveSimpson(cubicSpline.toOptionalProc, 0.0, 7.5)
     let correct = -cos(7.5) + cos(0.0)
     check isClose(computedValue, correct, tol=1e-7)
 
@@ -67,7 +67,7 @@ test "HermiteSpline (without dY) Eval in input points, for loop":
         res[i] = hermiteSpline.eval(tTemp)
     for i, val in res:
         check isClose(val, y[i], 1e-15)
-    
+
 test "HermiteSpline (without dY) Eval between input points":
     let res = hermiteSpline.eval(tTest)
     for i, val in res:
@@ -81,7 +81,7 @@ test "HermiteSpline (without dY).toProc, single value":
         check isClose(val, y[i], 1e-15)
 
 test "HermiteSpline (without dY) Integrate using adaptiveSimpson, implicit":
-    let computedValue = adaptiveSimpson(hermiteSpline, 0.0, 7.5)
+    let computedValue = adaptiveSimpson(hermiteSpline.toOptionalProc, 0.0, 7.5)
     let correct = -cos(7.5) + cos(0.0)
     #check isClose(computedValue, correct, tol=1e-7)
     check abs(computedValue - correct) < 2e-6
@@ -110,7 +110,7 @@ test "HermiteSpline Eval in input points, for loop":
         res[i] = hermiteSpline2.eval(tTemp)
     for i, val in res:
         check isClose(val, y[i], 1e-15)
-    
+
 test "HermiteSpline Eval between input points":
     let res = hermiteSpline2.eval(tTest)
     for i, val in res:
@@ -124,7 +124,7 @@ test "HermiteSpline (without dY).toProc, single value":
         check isClose(val, y[i], 1e-15)
 
 test "HermiteSpline Integrate using adaptiveSimpson, implicit":
-    let computedValue = adaptiveSimpson(hermiteSpline2, 0.0, 7.5)
+    let computedValue = adaptiveSimpson(hermiteSpline2.toOptionalProc, 0.0, 7.5)
     let correct = -cos(7.5) + cos(0.0)
     #check isClose(computedValue, correct, tol=1e-7)
     check abs(computedValue - correct) < 1e-7
@@ -140,4 +140,3 @@ test "HermiteSpline derivEval, seq input":
     for i, val in res:
         #check isClose(val, cos(tTest[i]), 1e-3)
         check abs(val - cos(tTest[i])) < 1e-5
-

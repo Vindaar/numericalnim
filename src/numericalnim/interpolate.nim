@@ -8,7 +8,7 @@ type
     X: seq[float]
     high: int
     len: int
-    coeffs: seq[array[5, float]]
+    coeffs: seq[array[5, T]]
   HermiteSpline*[T] = ref object
     # Lazy evaluation
     X: seq[float]
@@ -77,7 +77,7 @@ proc constructCubicSpline[T](X: openArray[float], Y: openArray[T]): seq[array[5,
   result = newSeq[array[5, float]](n)
   for i in 0 ..< n:
     result[i] = [a[i], b[i], c[i], d[i], X[i]]
-    
+
 
 proc newCubicSpline*[T: SomeFloat](X: openArray[float], Y: openArray[T]): CubicSpline[T] =
   let sortedData = sortDataset(X, Y)
@@ -176,10 +176,10 @@ proc eval*[T](spline: SplineType[T], x: openArray[float]): seq[T] =
   for i, xi in x:
     result[i] = eval(spline, xi)
 
-converter toProc*[T](spline: SplineType[T]): SplineProc[T] =
+proc toProc*[T](spline: SplineType[T]): SplineProc[T] =
   result = proc(x: float): T = eval(spline, x)
 
-converter toOptionalProc*[T](spline: SplineType[T]): proc(x: float, ctx: NumContext[T]): T =
+proc toOptionalProc*[T](spline: SplineType[T]): NumContextProc[T] =
   result = proc(x: float, ctx: NumContext[T]): T = eval(spline, x)
 
 proc derivEval*[T](spline: SplineType[T], x: openArray[float]): seq[T] =
